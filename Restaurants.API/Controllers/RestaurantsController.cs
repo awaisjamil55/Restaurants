@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurants.Application.Restaurants.Commands.CreateRestaurant;
 using Restaurants.Application.Restaurants.Commands.DeleteRestaurant;
 using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
+using Restaurants.Application.Restaurants.Dtos;
 using Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
 using Restaurants.Application.Restaurants.Queries.GetRestaurantById;
 
@@ -22,7 +23,7 @@ public class RestaurantsController : ControllerBase
     [HttpGet]
     [Route("{id}")]
     //public async Task<IActionResult> Get([FromRoute]int id)
-    public async Task<IActionResult> Get(int id)
+    public async Task<ActionResult<RestaurantDto?>> Get(int id)
     {
         var restaurant = await _mediator.Send(new GetRestaurantByIdQuery(id));
 
@@ -35,7 +36,7 @@ public class RestaurantsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
     {
         return Ok(await _mediator.Send(new GetAllRestaurantsQuery()));
     }
