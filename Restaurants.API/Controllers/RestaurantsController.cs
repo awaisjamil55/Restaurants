@@ -14,9 +14,7 @@ public class RestaurantsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public RestaurantsController(
-        IMediator mediator
-    )
+    public RestaurantsController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -52,7 +50,10 @@ public class RestaurantsController : ControllerBase
 
     [HttpPatch]
     [Route("{id}")]
-    public async Task<IActionResult> UpdateRestaurant(int id, [FromBody] UpdateRestaurantCommand command)
+    public async Task<IActionResult> UpdateRestaurant(
+        int id,
+        [FromBody] UpdateRestaurantCommand command
+    )
     {
         command.Id = id;
         var i = await _mediator.Send(command);
