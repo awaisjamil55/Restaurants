@@ -21,56 +21,62 @@ internal class RestaurantSeeder(RestaurantsDbContext restaurantsDbContext) : IRe
     {
         return new List<Restaurant>()
         {
-            new Restaurant {
-                Name="KFC",
-                Category="Fast Food",
-                Description="Fast food chain",
-                ContactEmail="contactEmail@kfc.com",
-                HasDelivery=true,
+            new Restaurant
+            {
+                Name = "KFC",
+                Category = "Fast Food",
+                Description = "Fast food chain",
+                ContactEmail = "contactEmail@kfc.com",
+                HasDelivery = true,
                 Address = new()
                 {
-                    City="Lahore",
-                    Street="Canal bank",
-                    PostalCode="54840"
+                    City = "Lahore",
+                    Street = "Canal bank",
+                    PostalCode = "54840"
                 },
                 Dishes =
                 [
-                    new(){
-                        Name="Zinger Burger",
-                        Description="Zinger burger with fries",
-                        Price=350
+                    new()
+                    {
+                        Name = "Zinger Burger",
+                        Description = "Zinger burger with fries",
+                        Price = 350
                     },
-                    new(){
-                        Name="Chicken Nuggets",
-                        Description="Fries chicken nuggets (10 pcs)",
-                        Price=250
+                    new()
+                    {
+                        Name = "Chicken Nuggets",
+                        Description = "Fries chicken nuggets (10 pcs)",
+                        Price = 250
                     }
                 ]
             },
-            new Restaurant {
-                Name="Howdy",
-                Category="Fast Food",
-                Description="All beef and chicken varieties are available",
-                ContactEmail="contactEmail@howdy.com",
-                ContactNumber="+92123456789",
-                HasDelivery=true,
+            new Restaurant
+            {
+                Name = "Howdy",
+                Category = "Fast Food",
+                Description = "All beef and chicken varieties are available",
+                ContactEmail = "contactEmail@howdy.com",
+                ContactNumber = "+92123456789",
+                HasDelivery = true,
                 Address = new()
                 {
-                    City="Lahore",
-                    Street="Canal bank",
-                    PostalCode="54840"
+                    City = "Lahore",
+                    Street = "Canal bank",
+                    PostalCode = "54840"
                 },
-                Dishes = 
+                Dishes =
                 [
-                    new(){
-                        Name="Dasher",
-                        Description="Beef burger with fries",
-                        Price=550
+                    new()
+                    {
+                        Name = "Dasher",
+                        Description = "Beef burger with fries",
+                        Price = 550
                     },
-                    new(){
-                        Name="Chicken Burger",
-                        Description="Petty burger",
-                        Price=300
+                    new()
+                    {
+                        Name = "Chicken Burger",
+                        Description = "Petty burger",
+                        Price = 300
                     }
                 ]
             }

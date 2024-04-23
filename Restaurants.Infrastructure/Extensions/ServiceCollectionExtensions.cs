@@ -10,7 +10,10 @@ namespace Restaurants.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         RegisterDbContext(services, configuration);
         RegisterSeeders(services);
@@ -21,23 +24,25 @@ public static class ServiceCollectionExtensions
     /// Register DbContext
     /// </summary>
     /// <param name="service"></param>
-    private static void RegisterDbContext(IServiceCollection services, IConfiguration configuration) =>
-        services
-            .AddDbContext<RestaurantsDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("RestaurantsDb")));
+    private static void RegisterDbContext(
+        IServiceCollection services,
+        IConfiguration configuration
+    ) =>
+        services.AddDbContext<RestaurantsDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("RestaurantsDb"))
+        );
 
     /// <summary>
     /// Register Seeders
     /// </summary>
     /// <param name="service"></param>
     private static void RegisterSeeders(IServiceCollection services) =>
-        services
-            .AddScoped<IRestaurantSeeder, RestaurantSeeder>();
+        services.AddScoped<IRestaurantSeeder, RestaurantSeeder>();
 
     /// <summary>
     /// Register all the repositories
     /// </summary>
     /// <param name="service"></param>
     private static void RegisterRepositories(IServiceCollection services) =>
-        services
-            .AddScoped<IRestaurantsRepository, RestaurantsRepository>();
+        services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
 }

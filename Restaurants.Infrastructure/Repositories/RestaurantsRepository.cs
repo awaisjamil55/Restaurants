@@ -9,9 +9,7 @@ internal class RestaurantsRepository : IRestaurantsRepository
 {
     private readonly RestaurantsDbContext _dbContext;
 
-    public RestaurantsRepository(
-        RestaurantsDbContext dbContext
-    )
+    public RestaurantsRepository(RestaurantsDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -20,7 +18,7 @@ internal class RestaurantsRepository : IRestaurantsRepository
         await _dbContext.Restaurants.ToListAsync();
 
     public async Task<Restaurant?> GetByIdAsync(int id) =>
-        await _dbContext.Restaurants.FirstOrDefaultAsync(x => x.Id == id);
+        await _dbContext.Restaurants.Include(x => x.Dishes).FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<int> Create(Restaurant entity)
     {
@@ -36,6 +34,5 @@ internal class RestaurantsRepository : IRestaurantsRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public Task SaveChanges() =>
-        _dbContext.SaveChangesAsync();
+    public Task SaveChanges() => _dbContext.SaveChangesAsync();
 }
