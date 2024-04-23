@@ -22,7 +22,10 @@ public class UpdateRestaurantCommandHandler : IRequestHandler<UpdateRestaurantCo
         _mapper = mapper;
     }
 
-    public async Task<bool> Handle(UpdateRestaurantCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(
+        UpdateRestaurantCommand request,
+        CancellationToken cancellationToken
+    )
     {
         var restaurant = await _restaurantsRepository.GetByIdAsync(request.Id);
         if (restaurant == null)
