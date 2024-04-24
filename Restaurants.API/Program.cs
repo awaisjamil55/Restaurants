@@ -1,3 +1,5 @@
+using Restaurants.API.Exceptions;
+using Restaurants.API.Logging;
 using Restaurants.Application.Extensions;
 using Restaurants.Infrastructure.Extensions;
 using Restaurants.Infrastructure.Seeders;
@@ -9,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddErrorHandling();
+builder.Services.AddLoggings();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -25,6 +30,9 @@ var seeder = scope.ServiceProvider.GetRequiredService<IRestaurantSeeder>();
 await seeder.Seed();
 
 // Configure the HTTP request pipeline.
+app.UseErrorHandling();
+app.UseLogging();
+
 //app.UseSerilogRequestLogging();
 
 app.UseSwagger();

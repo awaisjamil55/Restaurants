@@ -23,23 +23,12 @@ public class RestaurantsController : ControllerBase
     [HttpGet]
     [Route("{id}")]
     //public async Task<IActionResult> Get([FromRoute]int id)
-    public async Task<ActionResult<RestaurantDto?>> Get(int id)
-    {
-        var restaurant = await _mediator.Send(new GetRestaurantByIdQuery(id));
-
-        if (restaurant == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(restaurant);
-    }
+    public async Task<ActionResult<RestaurantDto?>> Get(int id) =>
+        Ok(await _mediator.Send(new GetRestaurantByIdQuery(id)));
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll()
-    {
-        return Ok(await _mediator.Send(new GetAllRestaurantsQuery()));
-    }
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll() =>
+        Ok(await _mediator.Send(new GetAllRestaurantsQuery()));
 
     [HttpPost]
     public async Task<IActionResult> CreateRestaurant([FromBody] CreateRestaurantCommand command)
@@ -51,26 +40,27 @@ public class RestaurantsController : ControllerBase
 
     [HttpPatch]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateRestaurant(
         int id,
         [FromBody] UpdateRestaurantCommand command
     )
     {
         command.Id = id;
-        var i = await _mediator.Send(command);
+        await _mediator.Send(command);
 
-        return CreatedAtAction(nameof(Get), new { id }, null);
+        return NoContent();
     }
 
     [HttpDelete]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteRestaurant(int id)
     {
-        if (await _mediator.Send(new DeleteRestaurantCommand(id)))
-        {
-            return NoContent();
-        }
+        await _mediator.Send(new DeleteRestaurantCommand(id));
 
-        return NotFound();
+        return NoContent();
     }
 }

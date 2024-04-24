@@ -29,6 +29,8 @@ public class GetAllRestaurantsQueryHandler
         CancellationToken cancellationToken
     )
     {
+        _logger.LogInformation("Getting all restaurants");
+
         var restaurants = await _restaurantsRepository.GetAllAsync();
 
         return _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
