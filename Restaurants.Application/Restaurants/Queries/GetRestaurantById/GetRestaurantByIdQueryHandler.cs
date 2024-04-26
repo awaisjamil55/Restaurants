@@ -30,7 +30,7 @@ public class GetRestaurantByIdQueryHandler : IRequestHandler<GetRestaurantByIdQu
         CancellationToken cancellationToken
     )
     {
-        _logger.LogInformation("Getting restaurant {RestaurantId}", request.Id);
+        _logger.LogInformation("Fetching restaurant {RestaurantId}", request.Id);
 
         var restaurant =
             await _restaurantsRepository.GetByIdAsync(request.Id)

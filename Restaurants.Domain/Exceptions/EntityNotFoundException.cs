@@ -3,7 +3,8 @@
 /// <summary>
 /// Rpresents an exception that is thrown when Entity not found
 /// </summary>
-/// <param name="message"></param>
+/// <param name="entityType"></param>
+/// <param name="entityId"></param>
 public class EntityNotFoundException : Exception
 {
     public EntityNotFoundException(string entityType, string entityId)

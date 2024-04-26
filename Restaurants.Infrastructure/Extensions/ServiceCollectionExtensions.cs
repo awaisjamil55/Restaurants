@@ -44,5 +44,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="service"></param>
     private static void RegisterRepositories(IServiceCollection services) =>
-        services.AddScoped<IRestaurantsRepository, RestaurantsRepository>();
+        services
+            .AddScoped<IRestaurantsRepository, RestaurantsRepository>()
+            .AddScoped<IDishesRepository, DishesRepository>();
 }

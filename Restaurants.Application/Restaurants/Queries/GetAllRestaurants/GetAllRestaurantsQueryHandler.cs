@@ -29,7 +29,7 @@ public class GetAllRestaurantsQueryHandler
         CancellationToken cancellationToken
     )
     {
-        _logger.LogInformation("Getting all restaurants");
+        _logger.LogInformation("Fetching all restaurants");
 
         var restaurants = await _restaurantsRepository.GetAllAsync();
 
