@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurants.Domain.Entities.Identity;
 using Restaurants.Domain.Repositories;
 using Restaurants.Infrastructure.Persistence;
 using Restaurants.Infrastructure.Repositories;
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
     )
     {
         RegisterDbContext(services, configuration);
+        RegisterIdentity(services);
         RegisterSeeders(services);
         RegisterRepositories(services);
     }
@@ -31,6 +33,13 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<RestaurantsDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("RestaurantsDb"))
         );
+
+    /// <summary>
+    /// Register AspNetCore Identity
+    /// </summary>
+    /// <param name="service"></param>
+    private static void RegisterIdentity(IServiceCollection services) =>
+        services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<RestaurantsDbContext>();
 
     /// <summary>
     /// Register Seeders
