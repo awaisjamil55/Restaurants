@@ -1,8 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Restaurants.Domain.Entities.Identity;
 using Restaurants.Domain.Repositories;
+using Restaurants.Infrastructure.Authorization;
+using Restaurants.Infrastructure.Authorization.Requirements;
 using Restaurants.Infrastructure.Persistence;
 using Restaurants.Infrastructure.Repositories;
 using Restaurants.Infrastructure.Seeders;
@@ -20,6 +24,8 @@ public static class ServiceCollectionExtensions
         RegisterIdentity(services);
         RegisterSeeders(services);
         RegisterRepositories(services);
+        RegisterRequirments(services);
+        RegisterPolicies(services);
     }
 
     /// <summary>
@@ -39,7 +45,34 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="service"></param>
     private static void RegisterIdentity(IServiceCollection services) =>
-        services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<RestaurantsDbContext>();
+        services
+            .AddIdentityApiEndpoints<User>()
+            .AddRoles<IdentityRole>()
+            .AddClaimsPrincipalFactory<RestaurantsUserClaimsPrincipalFactory>()
+            .AddEntityFrameworkStores<RestaurantsDbContext>();
+
+    /// <summary>
+    /// Register Authorization Requirments
+    /// </summary>
+    /// <param name="service"></param>
+    private static void RegisterRequirments(IServiceCollection services) =>
+        services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
+
+    /// <summary>
+    /// Register Policies
+    /// </summary>
+    /// <param name="service"></param>
+    private static void RegisterPolicies(IServiceCollection services) =>
+        services
+            .AddAuthorizationBuilder()
+            .AddPolicy(
+                Policies.HavePassport,
+                builder => builder.RequireClaim(AppClaimTypes.HavePassport, "Yes")
+            )
+            .AddPolicy(
+                Policies.MinimumAge18,
+                builder => builder.AddRequirements(new MinimumAgeRequirement(18))
+            );
 
     /// <summary>
     /// Register Seeders

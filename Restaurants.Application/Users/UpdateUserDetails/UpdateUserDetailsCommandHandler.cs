@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Restaurants.Domain.Entities.Identity;
 using Restaurants.Domain.Exceptions;
 
-namespace Restaurants.Application.Users.Commands;
+namespace Restaurants.Application.Users.UpdateUserDetails;
 
 public class UpdateUserDetailsCommandHandler : IRequestHandler<UpdateUserDetailsCommand>
 {
