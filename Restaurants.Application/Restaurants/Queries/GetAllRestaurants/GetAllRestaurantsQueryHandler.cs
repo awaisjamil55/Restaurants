@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Restaurants.Application.Pagination;
 using Restaurants.Application.Restaurants.Dtos;
 using Restaurants.Domain.Repositories;
 
 namespace Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
 
 public class GetAllRestaurantsQueryHandler
-    : IRequestHandler<GetAllRestaurantsQuery, IEnumerable<RestaurantDto>>
+    : IRequestHandler<GetAllRestaurantsQuery, PagedResult<RestaurantDto>>
 {
     private readonly IRestaurantsRepository _restaurantsRepository;
     private readonly ILogger<GetAllRestaurantsQueryHandler> _logger;
@@ -24,15 +25,24 @@ public class GetAllRestaurantsQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<RestaurantDto>> Handle(
+    public async Task<PagedResult<RestaurantDto>> Handle(
         GetAllRestaurantsQuery request,
         CancellationToken cancellationToken
     )
     {
         _logger.LogInformation("Fetching all restaurants");
 
-        var restaurants = await _restaurantsRepository.SearchAsync(request.SearchTerm);
+        var (restaurants, totalCount) = await _restaurantsRepository.SearchAsync(
+            request.SearchTerm,
+            request.PageNumber,
+            request.PageSize
+        );
 
-        return _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
+        return new PagedResult<RestaurantDto>(
+            _mapper.Map<IEnumerable<RestaurantDto>>(restaurants),
+            totalCount,
+            request.PageSize,
+            request.PageNumber
+        );
     }
 }
