@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Restaurants.Domain.Entities.Identity;
+using Restaurants.Domain.Interfaces;
 using Restaurants.Domain.Repositories;
 using Restaurants.Infrastructure.Authorization;
 using Restaurants.Infrastructure.Authorization.Requirements;
+using Restaurants.Infrastructure.Authorization.Services;
 using Restaurants.Infrastructure.Persistence;
 using Restaurants.Infrastructure.Repositories;
 using Restaurants.Infrastructure.Seeders;
@@ -26,6 +28,7 @@ public static class ServiceCollectionExtensions
         RegisterRepositories(services);
         RegisterRequirments(services);
         RegisterPolicies(services);
+        RegisterServices(services);
     }
 
     /// <summary>
@@ -89,4 +92,11 @@ public static class ServiceCollectionExtensions
         services
             .AddScoped<IRestaurantsRepository, RestaurantsRepository>()
             .AddScoped<IDishesRepository, DishesRepository>();
+
+    /// <summary>
+    /// Register Services
+    /// </summary>
+    /// <param name="service"></param>
+    private static void RegisterServices(IServiceCollection services) =>
+        services.AddScoped<IRestaurantAuthorizationService, RestaurantAuthorizationService>();
 }

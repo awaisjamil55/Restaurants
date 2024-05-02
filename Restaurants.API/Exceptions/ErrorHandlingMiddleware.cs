@@ -24,6 +24,11 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsync(entityNotFoundException.Message);
         }
+        catch (ForbidException)
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsync("Access forbidden");
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);

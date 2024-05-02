@@ -1,4 +1,6 @@
-﻿namespace Restaurants.Domain.Entities;
+﻿using Restaurants.Domain.Entities.Identity;
+
+namespace Restaurants.Domain.Entities;
 
 public class Restaurant
 {
@@ -13,4 +15,6 @@ public class Restaurant
 
     public Address? Address { get; set; }
     public IList<Dish> Dishes { get; set; } = new List<Dish>();
+    public User Owner { get; set; }
+    public string OwnerId { get; set; } = string.Empty;
 }
