@@ -30,9 +30,11 @@ public class RestaurantsController : ControllerBase
         Ok(await _mediator.Send(new GetRestaurantByIdQuery(id)));
 
     [HttpGet]
+    [AllowAnonymous]
     //[Authorize(Policy = Policies.Minimum2ResturantsOwned)]
-    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll() =>
-        Ok(await _mediator.Send(new GetAllRestaurantsQuery()));
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll(
+        [FromQuery] GetAllRestaurantsQuery query
+    ) => Ok(await _mediator.Send(query));
 
     [HttpPost]
     [Authorize(Roles = UserRoles.Owner)]

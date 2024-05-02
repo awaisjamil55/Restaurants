@@ -31,7 +31,7 @@ public class GetAllRestaurantsQueryHandler
     {
         _logger.LogInformation("Fetching all restaurants");
 
-        var restaurants = await _restaurantsRepository.GetAllAsync();
+        var restaurants = await _restaurantsRepository.SearchAsync(request.SearchTerm);
 
         return _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
     }

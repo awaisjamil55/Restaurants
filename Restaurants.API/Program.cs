@@ -30,9 +30,6 @@ app.UseLogging();
 
 app.UseRestaurantsSwaggerUI();
 
-//app.UseSwagger();
-//app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
 
 app.MapGroup("api/identity").WithTags("Identity").MapIdentityApi<User>();
