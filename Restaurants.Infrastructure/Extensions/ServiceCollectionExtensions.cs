@@ -59,7 +59,9 @@ public static class ServiceCollectionExtensions
     /// </summary>
     /// <param name="service"></param>
     private static void RegisterRequirments(IServiceCollection services) =>
-        services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
+        services
+            .AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>()
+            .AddScoped<IAuthorizationHandler, CreatedMultipleRestaurantsRequirementHandler>();
 
     /// <summary>
     /// Register Policies
@@ -75,6 +77,10 @@ public static class ServiceCollectionExtensions
             .AddPolicy(
                 Policies.MinimumAge18,
                 builder => builder.AddRequirements(new MinimumAgeRequirement(18))
+            )
+            .AddPolicy(
+                Policies.Minimum2ResturantsOwned,
+                builder => builder.AddRequirements(new CreatedMultipleRestaurantsRequirement(2))
             );
 
     /// <summary>
