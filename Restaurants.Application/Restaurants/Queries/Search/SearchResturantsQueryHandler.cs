@@ -4,18 +4,18 @@ using Microsoft.Extensions.Logging;
 using Restaurants.Application.Restaurants.Dtos;
 using Restaurants.Domain.Repositories;
 
-namespace Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
+namespace Restaurants.Application.Restaurants.Queries.Search;
 
-public class GetAllRestaurantsQueryHandler
-    : IRequestHandler<GetAllRestaurantsQuery, IEnumerable<RestaurantDto>>
+public class SearchResturantsQueryHandler
+    : IRequestHandler<SearchResturantsQuery, IEnumerable<RestaurantDto>>
 {
     private readonly IRestaurantsRepository _restaurantsRepository;
-    private readonly ILogger<GetAllRestaurantsQueryHandler> _logger;
+    private readonly ILogger<SearchResturantsQueryHandler> _logger;
     private readonly IMapper _mapper;
 
-    public GetAllRestaurantsQueryHandler(
+    public SearchResturantsQueryHandler(
         IRestaurantsRepository restaurantsRepository,
-        ILogger<GetAllRestaurantsQueryHandler> logger,
+        ILogger<SearchResturantsQueryHandler> logger,
         IMapper mapper
     )
     {
@@ -25,17 +25,22 @@ public class GetAllRestaurantsQueryHandler
     }
 
     public async Task<IEnumerable<RestaurantDto>> Handle(
-        GetAllRestaurantsQuery request,
+        SearchResturantsQuery request,
         CancellationToken cancellationToken
     )
     {
         _logger.LogInformation(
-            "Fetching {Limit} restaurants from offset {Offset}",
+            "Fetching {Limit} restaurants from offset {Offset}. Search Term: {SearchTerm}",
             request.Limit,
-            request.Offset
+            request.Offset,
+            request.SearchTerm
         );
 
-        var restaurants = await _restaurantsRepository.GetAllAsync(request.Offset, request.Limit);
+        var restaurants = await _restaurantsRepository.SearchAsync(
+            request.SearchTerm,
+            request.Offset,
+            request.Limit
+        );
 
         return _mapper.Map<IEnumerable<RestaurantDto>>(restaurants);
     }

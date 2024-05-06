@@ -7,6 +7,7 @@ using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
 using Restaurants.Application.Restaurants.Dtos;
 using Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
 using Restaurants.Application.Restaurants.Queries.GetRestaurantById;
+using Restaurants.Application.Restaurants.Queries.Search;
 using Restaurants.Domain.Constants;
 using Restaurants.Infrastructure.Authorization;
 
@@ -34,6 +35,14 @@ public class RestaurantsController : ControllerBase
     //[Authorize(Policy = Policies.Minimum2ResturantsOwned)]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll(
         [FromQuery] GetAllRestaurantsQuery query
+    ) => Ok(await _mediator.Send(query));
+
+    [HttpGet]
+    [Route("search")]
+    [AllowAnonymous]
+    //[Authorize(Policy = Policies.Minimum2ResturantsOwned)]
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> Search(
+        [FromQuery] SearchResturantsQuery query
     ) => Ok(await _mediator.Send(query));
 
     [HttpPost]

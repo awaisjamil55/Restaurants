@@ -14,30 +14,26 @@ internal class RestaurantsRepository : IRestaurantsRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<Restaurant>> GetAllAsync() =>
-        await _dbContext.Restaurants.ToListAsync();
+    public async Task<IEnumerable<Restaurant>> GetAllAsync(int offset, int limit) =>
+        await _dbContext.Restaurants.Skip(offset).Take(limit).ToListAsync();
 
-    public async Task<(IEnumerable<Restaurant>, int)> SearchAsync(
+    public async Task<int> CountAsync(int offset, int limit) =>
+        await _dbContext.Restaurants.CountAsync();
+
+    public async Task<IEnumerable<Restaurant>> GetOwnedRestaurantsByUserIdAsync(string userId) =>
+        await _dbContext.Restaurants.Where(r => r.OwnerId == userId).ToListAsync();
+
+    public async Task<int> GetOwnedRestaurantsCountByUserIdAsync(string userId) =>
+        await _dbContext.Restaurants.CountAsync(r => r.OwnerId == userId);
+
+    public async Task<IEnumerable<Restaurant>> SearchAsync(
         string? searchTerm,
-        int pageNumber,
-        int pageSize
-    )
-    {
-        var searchTermLower = searchTerm?.ToLower();
+        int offset,
+        int limit
+    ) => await GetSearchQuery(searchTerm, offset, limit).ToListAsync();
 
-        var query = _dbContext.Restaurants.Where(r =>
-            searchTermLower == null
-            || (
-                r.Name.ToLower().Contains(searchTermLower)
-                || r.Description.ToLower().Contains(searchTermLower)
-            )
-        );
-
-        return (
-            await query.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync(),
-            await query.CountAsync()
-        );
-    }
+    public async Task<int> SearchCountAsync(string? searchTerm, int offset, int limit) =>
+        await GetSearchQuery(searchTerm, offset, limit).CountAsync();
 
     public async Task<Restaurant?> GetByIdAsync(int id) =>
         await _dbContext.Restaurants.Include(x => x.Dishes).FirstOrDefaultAsync(x => x.Id == id);
@@ -57,4 +53,20 @@ internal class RestaurantsRepository : IRestaurantsRepository
     }
 
     public Task SaveChanges() => _dbContext.SaveChangesAsync();
+
+    private IQueryable<Restaurant> GetSearchQuery(string? searchTerm, int offset, int limit)
+    {
+        var searchTermLower = searchTerm?.ToLower();
+
+        return _dbContext
+            .Restaurants.Where(r =>
+                searchTermLower == null
+                || (
+                    r.Name.ToLower().Contains(searchTermLower)
+                    || r.Description.ToLower().Contains(searchTermLower)
+                )
+            )
+            .Skip(offset)
+            .Take(limit);
+    }
 }

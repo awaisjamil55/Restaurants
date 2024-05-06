@@ -5,16 +5,16 @@ using Restaurants.Domain.Repositories;
 
 namespace Restaurants.Infrastructure.Authorization.Requirements;
 
-public class CreatedMultipleRestaurantsRequirementHandler
-    : AuthorizationHandler<CreatedMultipleRestaurantsRequirement>
+public class MultipleOwnedRestaurantsRequirementHandler
+    : AuthorizationHandler<MultipleOwnedRestaurantsRequirement>
 {
     private readonly IRestaurantsRepository _restaurantsRepository;
-    private readonly ILogger<CreatedMultipleRestaurantsRequirementHandler> _logger;
+    private readonly ILogger<MultipleOwnedRestaurantsRequirementHandler> _logger;
     private readonly IUserContext _userContext;
 
-    public CreatedMultipleRestaurantsRequirementHandler(
+    public MultipleOwnedRestaurantsRequirementHandler(
         IRestaurantsRepository restaurantsRepository,
-        ILogger<CreatedMultipleRestaurantsRequirementHandler> logger,
+        ILogger<MultipleOwnedRestaurantsRequirementHandler> logger,
         IUserContext userContext
     )
     {
@@ -25,7 +25,7 @@ public class CreatedMultipleRestaurantsRequirementHandler
 
     protected override async Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
-        CreatedMultipleRestaurantsRequirement requirement
+        MultipleOwnedRestaurantsRequirement requirement
     )
     {
         var currentUser = _userContext.GetCurrentUser();
@@ -35,10 +35,10 @@ public class CreatedMultipleRestaurantsRequirementHandler
             currentUser.Email
         );
 
-        var resturants = await _restaurantsRepository.GetAllAsync();
-        var userResturantsCreated = resturants.Count(r => r.OwnerId == currentUser!.Id);
+        var userOwnedResturants =
+            await _restaurantsRepository.GetOwnedRestaurantsCountByUserIdAsync(currentUser!.Id);
 
-        if (userResturantsCreated >= requirement.MinimumRestaurantsCreated)
+        if (userOwnedResturants >= requirement.MinimumOwnedRestaurants)
         {
             _logger.LogInformation("Minimum resturants owned authorization succeeded");
             context.Succeed(requirement);

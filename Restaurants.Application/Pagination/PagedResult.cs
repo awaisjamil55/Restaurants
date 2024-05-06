@@ -1,5 +1,7 @@
 ﻿namespace Restaurants.Application.Pagination;
 
+// Not using aywhere, if paginatin is not handeling at front-end
+//Create new endpoint which returns object for pagination
 public class PagedResult<TEntity>
 {
     public PagedResult(IEnumerable<TEntity> items, int totalCount, int pageSize, int pageNumber)
