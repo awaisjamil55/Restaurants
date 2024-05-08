@@ -11,7 +11,6 @@ namespace Restaurants.Application.Restaurants.Commands.CreateRestaurant.Tests;
 
 public class CreateRestaurantCommandHandlerTests
 {
-
     [Fact]
     public async Task Handle_ForValidCommand_ReturnsCreatedRestaurantId()
     {

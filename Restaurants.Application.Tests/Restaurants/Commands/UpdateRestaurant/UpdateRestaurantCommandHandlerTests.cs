@@ -27,7 +27,12 @@ public class UpdateRestaurantCommandHandlerTests
         _restaurantAuthorizationServiceMock = new Mock<IRestaurantAuthorizationService>();
         _restaurantRepositoryMock = new Mock<IRestaurantsRepository>();
 
-        _handler = new UpdateRestaurantCommandHandler(_restaurantRepositoryMock.Object, _restaurantAuthorizationServiceMock.Object, _loggerMock.Object, _mapperMock.Object);
+        _handler = new UpdateRestaurantCommandHandler(
+            _restaurantRepositoryMock.Object,
+            _restaurantAuthorizationServiceMock.Object,
+            _loggerMock.Object,
+            _mapperMock.Object
+        );
     }
 
     [Fact]
@@ -53,7 +58,9 @@ public class UpdateRestaurantCommandHandlerTests
 
         _restaurantRepositoryMock.Setup(r => r.GetByIdAsync(restaurantId)).ReturnsAsync(restaurant);
 
-        _restaurantAuthorizationServiceMock.Setup(a => a.Authorize(restaurant, ResourceOperation.Update)).Returns(true);
+        _restaurantAuthorizationServiceMock
+            .Setup(a => a.Authorize(restaurant, ResourceOperation.Update))
+            .Returns(true);
 
         // act
 
@@ -63,8 +70,6 @@ public class UpdateRestaurantCommandHandlerTests
 
         _restaurantRepositoryMock.Verify(r => r.SaveChanges(), Times.Once);
         _mapperMock.Verify(m => m.Map(command, restaurant), Times.Once);
-
-
     }
 
     [Fact]
@@ -81,7 +86,9 @@ public class UpdateRestaurantCommandHandlerTests
             HasDelivery = true
         };
 
-        _restaurantRepositoryMock.Setup(r => r.GetByIdAsync(restaurantId)).ReturnsAsync((Restaurant?)null);
+        _restaurantRepositoryMock
+            .Setup(r => r.GetByIdAsync(restaurantId))
+            .ReturnsAsync((Restaurant?)null);
 
         // act
 
@@ -89,7 +96,9 @@ public class UpdateRestaurantCommandHandlerTests
 
         // assert
 
-        await act.Should().ThrowAsync<EntityNotFoundException>().WithMessage($"Restaurant {restaurantId} doesn't exist");
+        await act.Should()
+            .ThrowAsync<EntityNotFoundException>()
+            .WithMessage($"Restaurant {restaurantId} doesn't exist");
     }
 
     [Fact]
@@ -97,7 +106,7 @@ public class UpdateRestaurantCommandHandlerTests
     {
         // arrange
 
-        var restaurantId = 2;
+        var restaurantId = 3;
         var request = new UpdateRestaurantCommand
         {
             Id = restaurantId,
@@ -106,14 +115,13 @@ public class UpdateRestaurantCommandHandlerTests
             HasDelivery = true
         };
 
-        var restaurant = new Restaurant()
-        {
-            Id = restaurantId
-        };
+        var restaurant = new Restaurant() { Id = restaurantId };
 
-        _restaurantRepositoryMock.Setup(r => r.GetByIdAsync(restaurantId)).ReturnsAsync((Restaurant?)null);
+        _restaurantRepositoryMock.Setup(r => r.GetByIdAsync(restaurantId)).ReturnsAsync(restaurant);
 
-        _restaurantAuthorizationServiceMock.Setup(a => a.Authorize(restaurant, ResourceOperation.Update)).Returns(false);
+        _restaurantAuthorizationServiceMock
+            .Setup(a => a.Authorize(restaurant, ResourceOperation.Update))
+            .Returns(false);
 
         // act
 
