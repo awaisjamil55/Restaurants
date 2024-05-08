@@ -5,5 +5,5 @@ namespace Restaurants.Infrastructure.Authorization.Requirements;
 public class MultipleOwnedRestaurantsRequirement(int minimumOwnedRestaurants)
     : IAuthorizationRequirement
 {
-    public int MinimumOwnedRestaurants { get; set; } = minimumOwnedRestaurants;
+    public int MinimumOwnedRestaurants { get; } = minimumOwnedRestaurants;
 }
