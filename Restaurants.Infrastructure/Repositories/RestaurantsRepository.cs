@@ -17,8 +17,7 @@ internal class RestaurantsRepository : IRestaurantsRepository
     public async Task<IEnumerable<Restaurant>> GetAllAsync(int offset, int limit) =>
         await _dbContext.Restaurants.Skip(offset).Take(limit).ToListAsync();
 
-    public async Task<int> CountAsync(int offset, int limit) =>
-        await _dbContext.Restaurants.CountAsync();
+    public async Task<int> CountAsync() => await _dbContext.Restaurants.CountAsync();
 
     public async Task<IEnumerable<Restaurant>> GetOwnedRestaurantsByUserIdAsync(string userId) =>
         await _dbContext.Restaurants.Where(r => r.OwnerId == userId).ToListAsync();
