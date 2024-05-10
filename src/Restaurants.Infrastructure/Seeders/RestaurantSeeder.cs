@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Restaurants.Domain.Constants;
 using Restaurants.Domain.Entities;
+using Restaurants.Domain.Entities.Identity;
 using Restaurants.Infrastructure.Persistence;
 
 namespace Restaurants.Infrastructure.Seeders;
@@ -9,6 +12,11 @@ internal class RestaurantSeeder(RestaurantsDbContext restaurantsDbContext) : IRe
 {
     public async Task Seed()
     {
+        if (restaurantsDbContext.Database.GetPendingMigrations().Any())
+        {
+            await restaurantsDbContext.Database.MigrateAsync();
+        }
+
         if (await restaurantsDbContext.Database.CanConnectAsync())
         {
             if (!restaurantsDbContext.Restaurants.Any())
@@ -39,6 +47,8 @@ internal class RestaurantSeeder(RestaurantsDbContext restaurantsDbContext) : IRe
 
     private IEnumerable<Restaurant> GetRestaurants()
     {
+        var owner = new User() { Email = "seed-user@test.com" };
+
         return new List<Restaurant>()
         {
             new Restaurant
@@ -68,7 +78,8 @@ internal class RestaurantSeeder(RestaurantsDbContext restaurantsDbContext) : IRe
                         Description = "Fries chicken nuggets (10 pcs)",
                         Price = 250
                     }
-                ]
+                ],
+                Owner = owner
             },
             new Restaurant
             {
@@ -98,7 +109,8 @@ internal class RestaurantSeeder(RestaurantsDbContext restaurantsDbContext) : IRe
                         Description = "Petty burger",
                         Price = 300
                     }
-                ]
+                ],
+                Owner = owner
             }
         };
     }
