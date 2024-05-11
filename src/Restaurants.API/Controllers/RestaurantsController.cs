@@ -93,7 +93,7 @@ public class RestaurantsController : ControllerBase
             new UploadRestaurantLogoCommand()
             {
                 RestauranId = id,
-                FileName = file.FileName,
+                FileName = $"{id}-{file.FileName}",
                 File = stream
             }
         );
