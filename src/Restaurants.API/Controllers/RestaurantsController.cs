@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurants.Application.Restaurants.Commands.CreateRestaurant;
 using Restaurants.Application.Restaurants.Commands.DeleteRestaurant;
 using Restaurants.Application.Restaurants.Commands.UpdateRestaurant;
+using Restaurants.Application.Restaurants.Commands.UploadRestaurantLogo;
 using Restaurants.Application.Restaurants.Dtos;
 using Restaurants.Application.Restaurants.Queries.GetAllRestaurants;
 using Restaurants.Application.Restaurants.Queries.GetRestaurantById;
@@ -78,6 +79,24 @@ public class RestaurantsController : ControllerBase
     public async Task<IActionResult> DeleteRestaurant(int id)
     {
         await _mediator.Send(new DeleteRestaurantCommand(id));
+
+        return NoContent();
+    }
+
+    [HttpPost]
+    [Route("{id}/logo")]
+    public async Task<IActionResult> UploadLogo([FromRoute] int id, IFormFile file)
+    {
+        using var stream = file.OpenReadStream();
+
+        await _mediator.Send(
+            new UploadRestaurantLogoCommand()
+            {
+                RestauranId = id,
+                FileName = file.FileName,
+                File = stream
+            }
+        );
 
         return NoContent();
     }

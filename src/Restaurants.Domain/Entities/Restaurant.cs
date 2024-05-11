@@ -17,4 +17,5 @@ public class Restaurant
     public IList<Dish> Dishes { get; set; } = new List<Dish>();
     public User Owner { get; set; }
     public string OwnerId { get; set; } = string.Empty;
+    public string? LogoUrl { get; set; }
 }
