@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using Restaurants.Domain.Repositories;
+using Restaurants.Infrastructure.Seeders;
 using Xunit;
 
 namespace Restaurants.API.Tests;
@@ -16,6 +17,7 @@ public class IntegrationTestsWithSQLBase : IClassFixture<WebApplicationFactory<P
     protected HttpClient _client;
 
     protected readonly Mock<IRestaurantsRepository> _restaurantRepositoryMock = new();
+    protected readonly Mock<IRestaurantSeeder> _restaurantSeederMock = new();
 
     public IntegrationTestsWithSQLBase(WebApplicationFactory<Program> factory)
     {
@@ -37,6 +39,13 @@ public class IntegrationTestsWithSQLBase : IClassFixture<WebApplicationFactory<P
         services.Replace(
             ServiceDescriptor.Scoped(
                 typeof(IRestaurantsRepository),
+                _ => _restaurantRepositoryMock.Object
+            )
+        );
+
+        services.Replace(
+            ServiceDescriptor.Scoped(
+                typeof(IRestaurantSeeder),
                 _ => _restaurantRepositoryMock.Object
             )
         );
