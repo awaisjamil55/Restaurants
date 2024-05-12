@@ -46,7 +46,7 @@ public class IntegrationTestsWithSQLBase : IClassFixture<WebApplicationFactory<P
         services.Replace(
             ServiceDescriptor.Scoped(
                 typeof(IRestaurantSeeder),
-                _ => _restaurantRepositoryMock.Object
+                _ => _restaurantSeederMock.Object
             )
         );
     }
