@@ -1,4 +1,4 @@
-name: restaurants-api
+name: restaurants-api-cd
 
 on:
   push:
@@ -22,8 +22,6 @@ jobs:
         run: dotnet build --no-restore -c Release
       - name: Test
         run: dotnet test
-      - name: Build
-        run: dotnet build --no-restore
       - name: Publish
         run: dotnet publish ./src/Restaurants.API/Restaurants.API.csproj -o ${{env.DOTNET_ROOT}}/api --no-build
       - name: Upload a Build Artifact
@@ -44,5 +42,4 @@ jobs:
         uses: Azure/webapps-deploy@v3.0.1
         with:
           app-name: 'restaurantsApi-dev'
-          # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
           publish-profile: ${{ secsecrets.PUBLISH_PROFILE_DEV}}
