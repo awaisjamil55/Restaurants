@@ -4,4 +4,4 @@ using Restaurants.Application.Search;
 
 namespace Restaurants.Application.Restaurants.Queries.Search;
 
-public class SearchResturantsQuery : SearchText, IRequest<IEnumerable<RestaurantDto>> { }
+public class SearchRestaurantsQuery : SearchText, IRequest<IEnumerable<RestaurantDto>> { }

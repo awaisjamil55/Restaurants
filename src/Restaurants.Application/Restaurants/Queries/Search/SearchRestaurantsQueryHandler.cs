@@ -6,16 +6,16 @@ using Restaurants.Domain.Repositories;
 
 namespace Restaurants.Application.Restaurants.Queries.Search;
 
-public class SearchResturantsQueryHandler
-    : IRequestHandler<SearchResturantsQuery, IEnumerable<RestaurantDto>>
+public class SearchRestaurantsQueryHandler
+    : IRequestHandler<SearchRestaurantsQuery, IEnumerable<RestaurantDto>>
 {
     private readonly IRestaurantsRepository _restaurantsRepository;
-    private readonly ILogger<SearchResturantsQueryHandler> _logger;
+    private readonly ILogger<SearchRestaurantsQueryHandler> _logger;
     private readonly IMapper _mapper;
 
-    public SearchResturantsQueryHandler(
+    public SearchRestaurantsQueryHandler(
         IRestaurantsRepository restaurantsRepository,
-        ILogger<SearchResturantsQueryHandler> logger,
+        ILogger<SearchRestaurantsQueryHandler> logger,
         IMapper mapper
     )
     {
@@ -25,7 +25,7 @@ public class SearchResturantsQueryHandler
     }
 
     public async Task<IEnumerable<RestaurantDto>> Handle(
-        SearchResturantsQuery request,
+        SearchRestaurantsQuery request,
         CancellationToken cancellationToken
     )
     {

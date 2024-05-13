@@ -4,7 +4,7 @@ public static class Policies
 {
     public const string HavePassport = "HavePassport";
     public const string MinimumAge18 = "MinimumAge18";
-    public const string Minimum2ResturantsOwned = "Minimum2ResturantsOwned";
+    public const string Minimum2restaurantsOwned = "Minimum2restaurantsOwned";
 }
 
 public static class AppClaimTypes

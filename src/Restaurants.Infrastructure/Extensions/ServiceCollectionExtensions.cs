@@ -82,7 +82,7 @@ public static class ServiceCollectionExtensions
                 builder => builder.AddRequirements(new MinimumAgeRequirement(18))
             )
             .AddPolicy(
-                Policies.Minimum2ResturantsOwned,
+                Policies.Minimum2restaurantsOwned,
                 builder => builder.AddRequirements(new MultipleOwnedRestaurantsRequirement(2))
             );
 

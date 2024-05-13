@@ -35,12 +35,12 @@ public class MultipleOwnedRestaurantsRequirementHandler
             currentUser.Email
         );
 
-        var userOwnedResturants =
+        var userOwnedrestaurants =
             await _restaurantsRepository.GetOwnedRestaurantsCountByUserIdAsync(currentUser!.Id);
 
-        if (userOwnedResturants >= requirement.MinimumOwnedRestaurants)
+        if (userOwnedrestaurants >= requirement.MinimumOwnedRestaurants)
         {
-            _logger.LogInformation("Minimum resturants owned authorization succeeded");
+            _logger.LogInformation("Minimum restaurants owned authorization succeeded");
             context.Succeed(requirement);
         }
         else

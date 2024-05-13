@@ -33,7 +33,7 @@ public class RestaurantsController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    //[Authorize(Policy = Policies.Minimum2ResturantsOwned)]
+    //[Authorize(Policy = Policies.Minimum2restaurantsOwned)]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetAll(
         [FromQuery] GetAllRestaurantsQuery query
     ) => Ok(await _mediator.Send(query));
@@ -41,9 +41,9 @@ public class RestaurantsController : ControllerBase
     [HttpGet]
     [Route("search")]
     [AllowAnonymous]
-    //[Authorize(Policy = Policies.Minimum2ResturantsOwned)]
+    //[Authorize(Policy = Policies.Minimum2restaurantsOwned)]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> Search(
-        [FromQuery] SearchResturantsQuery query
+        [FromQuery] SearchRestaurantsQuery query
     ) => Ok(await _mediator.Send(query));
 
     [HttpPost]
