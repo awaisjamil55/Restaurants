@@ -35,11 +35,11 @@ Set `Restaurants.API` as the startup project and start the application.
    - Parameters: `id`
    - Authorization: Bearer token
 
-3 . `GET /api/restaurants/search`
+3. `GET /api/restaurants/search`
    - Parameters: `searchTerm`, `offset`, `limit`
    - Authorization Not required
 
-4 . `POST /api/restaurants/{id}/logo`
+4. `POST /api/restaurants/{id}/logo`
    - Parameters: `id`
    - Body: File `file`
    - Authorization: Bearer token
